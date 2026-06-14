@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Matrix Summary</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <canvas id="celebration-canvas"></canvas>
+
+  <div class="perspective-container">
+    <div class="perspective-plane"></div>
+  </div>
+
+  <div class="app-container flex-center">
+    <section class="volumetric-card results-window">
+      <span class="results-header glowing-text">MISSION ACCOMPLISHED //</span>
+      <h1 class="results-rating text-pink" id="results-rating">EVALUATING PERFORMANCE</h1>
+      
+      <div class="results-layout">
+        <div class="results-pane-left">
+          <div class="results-stat">
+            <span class="hud-label">SESSION SCORE</span>
+            <h2 class="score-rollup text-cyan" id="results-score">0000</h2>
+          </div>
+          <div class="results-stat-group">
+            <div class="compact-stat">
+              <span class="hud-label">ACCURACY</span>
+              <span class="results-value" id="results-accuracy">0%</span>
+            </div>
+            <div class="compact-stat">
+              <span class="hud-label">XP AWARDED</span>
+              <span class="results-value text-pink" id="results-xp-gain">+0 XP</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-pane-right">
+          <div class="hud-label">XP ARCHIVE STATUS</div>
+          <div class="results-xp-panel">
+            <div class="xp-row">
+              <span class="profile-display-name" id="user-p-name">AGENT</span>
+              <span class="results-level" id="results-level">LVL 1</span>
+            </div>
+            <div class="progress-bar-outer">
+              <div class="progress-bar-inner" id="results-xp-fill"></div>
+            </div>
+            <span class="xp-range" id="results-xp-values">0 / 100 XP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-footer">
+        <button class="clicky-button color-pink" id="btn-return-lobby">
+          <span class="button-edge-extrusion"></span>
+          <span class="button-front-face">RETURN TO LOBBY</span>
+        </button>
+        <button class="clicky-button color-cyan" id="btn-restart-quiz">
+          <span class="button-edge-extrusion"></span>
+          <span class="button-front-face">RE-DEPLOY</span>
+        </button>
+      </div>
+    </section>
+  </div>
+  
+  <script src="app.js"></script>
+  <script src="results.js"></script>
+</body>
+</html>

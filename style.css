@@ -1,0 +1,646 @@
+/* ==========================================================================
+   DIMENSION3D MASTER DESIGN MATRIX (style.css)
+   ========================================================================== */
+
+:root {
+  /* Dynamic Color Palette with strict hex constants [5] */
+  --primary-deep: #1663c7;
+  --primary-glow: #30c9e8;
+  --success-color: #30e849;
+  --error-color: #e83a30;
+  --purple-accent: #a866ee;
+  
+  --dark-bg: #0b0f19;
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-glow: 0 8px 32px 0 rgba(3, 7, 18, 0.5);
+  
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans: 'Outfit', sans-serif;
+}
+
+/* Base resets & backgrounds */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--dark-bg);
+  color: #f1f5f9;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ambient backdrop layers */
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.glow-1 {
+  width: 400px;
+  height: 400px;
+  background: var(--primary-deep);
+  top: -10%;
+  left: -10%;
+}
+
+.glow-2 {
+  width: 500px;
+  height: 500px;
+  background: var(--purple-accent);
+  bottom: -15%;
+  right: -10%;
+}
+
+/* Custom Glassmorphism Cards [6, 1] */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-glow);
+  padding: 2rem;
+  transition: border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Main Hub Layout styles */
+.dashboard-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header-panel {
+  text-align: center;
+}
+
+.header-panel h1 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.accent-text {
+  background: linear-gradient(135deg, var(--primary-glow), var(--purple-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 860px) {
+ .dashboard-grid {
+    grid-template-columns: 380px 1fr;
+  }
+}
+
+/* User profile setup */
+.profile-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.avatar-holder {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-glow), var(--purple-accent));
+  padding: 3px;
+}
+
+.inner-avatar {
+  width: 100%;
+  height: 100%;
+  background: var(--dark-bg);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.stat-item {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* SVG Radial Meter styling [7] */
+.progress-visualization {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.progress-circle-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.progress-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.progress-ring__circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 314.159; /* Circumference for r=50 */
+  stroke-dashoffset: 314.159;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: stroke-dashoffset; /* Hardware acceleration optimization [8] */
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.profile-editor {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: auto;
+}
+
+.profile-editor input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--glass-border);
+  padding: 0.75rem;
+  border-radius: 12px;
+  color: #fff;
+  outline: none;
+}
+
+/* Topics setup */
+.topics-panel h2 {
+  font-family: var(--font-display);
+  margin-bottom: 1.5rem;
+}
+
+.topics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.topic-card:hover {
+  transform: scale(1.02) translateY(-2px);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--primary-glow);
+}
+
+.topic-icon {
+  font-size: 2.2rem;
+  text-align: center;
+}
+
+.topic-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+.topic-card p {
+  grid-column: 2;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.topic-meta {
+  grid-column: 2;
+  font-size: 0.8rem;
+  color: var(--primary-glow);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   TACTILE MECHANICAL 3D BUTTON PHYSICS ENGINE [8, 9, 10]
+   ========================================================================== */
+
+.pushable-3d-btn {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+
+.pushable-3d-btn.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.4);
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(.3,.7,.4, 1);
+}
+
+.pushable-3d-btn.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(220deg 100% 20%) 0%,
+    hsl(220deg 100% 30%) 8%,
+    hsl(220deg 100% 30%) 92%,
+    hsl(220deg 100% 20%) 100%
+  );
+}
+
+.pushable-3d-btn.front {
+  display: block;
+  position: relative;
+  padding: 12px 32px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: white;
+  background: var(--primary-deep);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(.3,.7,.4, 1);
+}
+
+/* Hover Physics */
+.pushable-3d-btn:hover.front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(.3,.7,.4, 1.5);
+}
+
+.pushable-3d-btn:hover.shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(.3,.7,.4, 1.5);
+}
+
+/* Compress/Click Action */
+.pushable-3d-btn:active.front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+.pushable-3d-btn:active.shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+/* Variant color configurations of 3D push buttons */
+.pushable-3d-btn.mini-btn.front {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.pushable-3d-btn.wrong-btn.edge {
+  background: linear-gradient(to left, hsl(0deg 100% 20%) 0%, hsl(0deg 100% 30%) 100%);
+}
+.pushable-3d-btn.wrong-btn.front {
+  background: var(--error-color);
+}
+
+.pushable-3d-btn.success-btn.edge {
+  background: linear-gradient(to left, hsl(130deg 100% 20%) 0%, hsl(130deg 100% 30%) 100%);
+}
+.pushable-3d-btn.success-btn.front {
+  background: var(--success-color);
+}
+
+/* ==========================================================================
+   QUIZ ARENA & 3D PERSPECTIVE FLIP CARDS [11, 12, 13]
+   ========================================================================== */
+
+.quiz-container {
+  width: 90%;
+  max-width: 700px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+}
+
+.quiz-topic-badge {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--primary-glow);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.score-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.quiz-stats-trackers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 1.5rem;
+  border-radius: 16px;
+}
+
+.timer-module {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer-ring__circle {
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 125.66; /* r=20 */
+  stroke-dashoffset: 125.66;
+  transition: stroke-dashoffset 0.15s linear;
+}
+
+.timer-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* The actual 3D Card Flipping architecture [14, 15, 11, 12] */
+.flip-card-container {
+  width: 100%;
+  height: 320px;
+  perspective: 1500px; /* Force-depth perspective viewpoint [16] */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d; /* Retain nested elements in unified 3D zone [16] */
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Prevent text bleed through mirrored elements [16] */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg); /* Render static backing pre-flipped */
+}
+
+/* Specific styling elements within the card */
+.card-glow-indicator {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--primary-glow), transparent);
+}
+
+.quiz-status-title {
+  font-size: 0.8rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.hint-container {
+  margin-top: 1.5rem;
+}
+
+.hint-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--primary-glow);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.hint-text {
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+  transition: opacity 0.3s;
+}
+
+.hidden {
+  display: none!important;
+}
+
+/* Interactive Choice grids */
+.choices-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 550px) {
+ .choices-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.choices-container.pushable-3d-btn {
+  width: 100%;
+}
+
+.choices-container.pushable-3d-btn.front {
+  padding: 18px 24px;
+  text-align: left;
+}
+
+/* Overlay Game-End Modal Glassmorphism Card [6, 17] */
+.glass-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 7, 18, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.analytics-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.metric-block {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metric-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-glow);
+}
+
+.metric-desc {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   STRICT ACCESSIBILITY DESTRUCT/OVERRIDE PROTOCOLS [17]
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+ .ambient-glow,
+ .flip-card-inner,
+ .progress-ring__circle,
+ .timer-ring__circle,
+ .pushable-3d-btn.front,
+ .pushable-3d-btn.shadow {
+    transition: none!important;
+    transform: none!important;
+    animation: none!important;
+  }
+
+ .flip-card-inner.flipped.flip-card-front {
+    display: none!important;
+  }
+  
+ .flip-card-inner.flipped.flip-card-back {
+    transform: none!important;
+    z-index: 10!important;
+  }
+}
+

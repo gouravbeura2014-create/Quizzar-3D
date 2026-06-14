@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Arena - Dimension3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <main class="quiz-container">
+    
+    <header class="glass-card quiz-header">
+      <button class="pushable-3d-btn mini-btn" onclick="window.location.href='index.html'">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">⬅ Exit</span>
+      </button>
+      <div class="quiz-topic-badge" id="activeTopicBadge">Category</div>
+      <div class="score-display">Live: <span id="currentScore">0</span> pts</div>
+    </header>
+
+    <div class="quiz-stats-trackers">
+      <div class="tracker-item">
+        <span class="tracker-label">Question Index</span>
+        <span class="tracker-value" id="questionCounter">0 / 0</span>
+      </div>
+      <div class="tracker-item timer-module">
+        <svg class="timer-ring" width="50" height="50">
+          <circle class="timer-ring__track" stroke="rgba(255, 255, 255, 0.1)" stroke-width="4" fill="transparent" r="20" cx="25" cy="25"/>
+          <circle class="timer-ring__circle" id="timerRing" stroke="#e83a30" stroke-width="4" fill="transparent" r="20" cx="25" cy="25"/>
+        </svg>
+        <span class="timer-text" id="timerSeconds">10</span>
+      </div>
+    </div>
+
+    <div class="flip-card-container">
+      <div class="flip-card-inner" id="questionCard">
+        
+        <div class="flip-card-front glass-card">
+          <div class="card-glow-indicator"></div>
+          <span class="quiz-status-title">DECISION MATRIX</span>
+          <p class="question-text" id="questionField">Initialising question stream...</p>
+          
+          <div class="hint-container">
+            <button class="hint-toggle-btn" onclick="toggleHintText()">💡 Reveal Dimensional Hint</button>
+            <p class="hint-text hidden" id="hintField">Loading quantum matrix hint...</p>
+          </div>
+        </div>
+        
+        <div class="flip-card-back glass-card">
+          <h3 id="feedbackHeader">ANALYSING OPTION</h3>
+          <p id="feedbackText">Synthesizing choices...</p>
+          <button class="pushable-3d-btn" id="nextQuestionBtn" style="margin-top: 1.5rem;">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">Progress Next ➡</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="choices-container" id="choicesBox">
+      </div>
+
+    <div class="glass-modal-overlay hidden" id="analyticsModal">
+      <div class="glass-card modal-content">
+        <h2>Quiz Completed!</h2>
+        <p>Your performance has been archived in LocalStorage.</p>
+        
+        <div class="analytics-metrics">
+          <div class="metric-block">
+            <span class="metric-num" id="finalRawScore">0</span>
+            <span class="metric-desc">Points Earned</span>
+          </div>
+          <div class="metric-block">
+            <span class="metric-num" id="finalPercentage">0%</span>
+            <span class="metric-desc">Accuracy</span>
+          </div>
+        </div>
+
+        <div class="action-footer">
+          <button class="pushable-3d-btn" onclick="window.location.href='index.html'">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">Return to Hub</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Launch quiz loop immediately on render
+    document.addEventListener("DOMContentLoaded", () => {
+      AppStorage.initializeState();
+      QuizController.startQuiz();
+    });
+
+    function toggleHintText() {
+      const hintField = document.getElementById("hintField");
+      hintField.classList.toggle("hidden");
+    }
+  </script>
+</body>
+</html>
+

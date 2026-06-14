@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimension3D - Interactive Gamified Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <main class="dashboard-container">
+    <header class="glass-card header-panel">
+      <h1>Dimension<span class="accent-text">3D</span></h1>
+      <p>Challenge your mind in an interactive spatial environment</p>
+    </header>
+
+    <div class="dashboard-grid">
+      <section class="glass-card profile-panel">
+        <h2>Player Profile</h2>
+        <div class="profile-meta">
+          <div class="avatar-holder">
+            <div class="inner-avatar">🚀</div>
+          </div>
+          <div class="user-details">
+            <h3 id="displayUsername">Loading Explorer...</h3>
+            <span class="badge" id="playerRank">Novice</span>
+          </div>
+        </div>
+
+        <div class="stats-showcase">
+          <div class="stat-item">
+            <span class="stat-label">Lifetime Score</span>
+            <span class="stat-value" id="totalScore">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Quizzes Played</span>
+            <span class="stat-value" id="quizzesCount">0</span>
+          </div>
+        </div>
+
+        <div class="progress-visualization">
+          <div class="progress-circle-container">
+            <svg class="progress-ring" width="120" height="120">
+              <circle class="progress-ring__track" stroke="rgba(255, 255, 255, 0.1)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+              <circle class="progress-ring__circle" id="overallProgressRing" stroke="#30c9e8" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+            </svg>
+            <span class="progress-text" id="scorePercentageText">0%</span>
+          </div>
+          <p class="progress-caption">Global Completion Rate</p>
+        </div>
+        
+        <div class="profile-editor">
+          <input type="text" id="usernameInput" placeholder="Update Username..." maxlength="15">
+          <button class="pushable-3d-btn mini-btn" id="saveProfileBtn">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">Save</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="glass-card topics-panel">
+        <h2>Choose Your Dimension</h2>
+        <div class="topics-grid">
+          
+          <div class="topic-card" onclick="initiateQuiz('science')">
+            <div class="topic-icon">🧬</div>
+            <h3>Quantum Science</h3>
+            <p>Unravel the mysteries of the cosmos and physical world.</p>
+            <span class="topic-meta">3 Questions • 10s per Q</span>
+          </div>
+
+          <div class="topic-card" onclick="initiateQuiz('space')">
+            <div class="topic-icon">🌌</div>
+            <h3>Cosmic Space</h3>
+            <p>Journey into the depths of stellar bodies and galaxies.</p>
+            <span class="topic-meta">3 Questions • 10s per Q</span>
+          </div>
+
+          <div class="topic-card" onclick="initiateQuiz('tech')">
+            <div class="topic-icon">💾</div>
+            <h3>Retro Tech</h3>
+            <p>Test your knowledge on computation and historic hardware.</p>
+            <span class="topic-meta">3 Questions • 10s per Q</span>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // Initialize Dashboard Profile on screen load
+    document.addEventListener("DOMContentLoaded", () => {
+      AppStorage.initializeState();
+      updateDashboardUI();
+
+      const saveBtn = document.getElementById("saveProfileBtn");
+      saveBtn.addEventListener("click", () => {
+        const username = document.getElementById("usernameInput").value.trim();
+        if (username) {
+          AppStorage.updateUsername(username);
+          updateDashboardUI();
+          document.getElementById("usernameInput").value = "";
+        }
+      });
+    });
+
+    function updateDashboardUI() {
+      const profile = AppStorage.getProfile();
+      if (profile) {
+        document.getElementById("displayUsername").textContent = profile.username;
+        document.getElementById("totalScore").textContent = profile.totalLifetimeScore;
+        document.getElementById("quizzesCount").textContent = profile.quizzesCompleted;
+
+        // Rank determination
+        let rank = "Novice";
+        if (profile.totalLifetimeScore >= 100) rank = "Initiated";
+        if (profile.totalLifetimeScore >= 200) rank = "Master";
+        document.getElementById("playerRank").textContent = rank;
+
+        // Animate global progress meter
+        const totalPossibleScore = profile.quizzesCompleted * 30; // Max 30 points per quiz (3 Qs * 10)
+        let percent = 0;
+        if (totalPossibleScore > 0) {
+          percent = Math.min(100, Math.round((profile.totalLifetimeScore / totalPossibleScore) * 100));
+        }
+        updateRadialProgressBar(percent);
+      }
+    }
+
+    function updateRadialProgressBar(percentageValue) {
+      const circle = document.getElementById('overallProgressRing');
+      const textElement = document.getElementById('scorePercentageText');
+      const radius = circle.r.baseVal.value;
+      const circumference = radius * 2 * Math.PI;
+      
+      circle.style.strokeDasharray = `${circumference} ${circumference}`;
+      const offset = circumference - (percentageValue / 100) * circumference;
+      
+      circle.getBoundingClientRect(); // Layout trigger for Safari performance [4]
+      circle.style.strokeDashoffset = offset;
+      textElement.textContent = `${percentageValue}%`;
+    }
+
+    function initiateQuiz(topicKey) {
+      AppStorage.launchQuiz(topicKey);
+    }
+  </script>
+</body>
+  </html>
+
